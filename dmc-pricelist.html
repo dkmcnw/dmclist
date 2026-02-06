@@ -1,0 +1,3994 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DMC Pricelist</title>
+    <style>
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+
+        /* Login Page Styles */
+        .login-container {
+            background: white;
+            border-radius: 20px;
+            box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+            overflow: hidden;
+            max-width: 400px;
+            width: 100%;
+            margin: 0 auto;
+            animation: slideUp 0.5s ease-out;
+        }
+
+        @keyframes slideUp {
+            from {
+                opacity: 0;
+                transform: translateY(30px);
+            }
+            to {
+                opacity: 1;
+                transform: translateY(0);
+            }
+        }
+
+        .login-header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 40px 30px;
+            text-align: center;
+        }
+
+        .login-header h1 {
+            font-size: 28px;
+            margin-bottom: 8px;
+        }
+
+        .login-header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .login-icon {
+            font-size: 50px;
+            margin-bottom: 15px;
+        }
+
+        .login-form {
+            padding: 40px 30px;
+        }
+
+        .form-group {
+            margin-bottom: 25px;
+        }
+
+        .form-label {
+            display: block;
+            font-size: 14px;
+            font-weight: 600;
+            color: #333;
+            margin-bottom: 8px;
+        }
+
+        .form-input {
+            width: 100%;
+            padding: 14px 16px;
+            font-size: 15px;
+            border: 2px solid #e0e0e0;
+            border-radius: 10px;
+            transition: all 0.3s;
+            font-family: inherit;
+        }
+
+        .form-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .form-input::placeholder {
+            color: #aaa;
+        }
+
+        .login-button {
+            width: 100%;
+            padding: 15px;
+            font-size: 16px;
+            font-weight: 600;
+            color: white;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+            transition: all 0.3s;
+            margin-top: 10px;
+        }
+
+        .login-button:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 10px 25px rgba(102, 126, 234, 0.3);
+        }
+
+        .login-button:active {
+            transform: translateY(0);
+        }
+
+        .error-message {
+            background: #fee;
+            color: #c33;
+            padding: 12px 16px;
+            border-radius: 8px;
+            font-size: 14px;
+            margin-bottom: 20px;
+            border-left: 4px solid #c33;
+            display: none;
+            animation: shake 0.5s;
+        }
+
+        .error-message.show {
+            display: block;
+        }
+
+        @keyframes shake {
+            0%, 100% { transform: translateX(0); }
+            25% { transform: translateX(-10px); }
+            75% { transform: translateX(10px); }
+        }
+
+        .login-footer {
+            text-align: center;
+            padding: 20px;
+            background: #f8f9fa;
+            color: #666;
+            font-size: 13px;
+        }
+
+        .password-toggle {
+            position: relative;
+        }
+
+        .toggle-icon {
+            position: absolute;
+            left: 16px;
+            top: 50%;
+            transform: translateY(-50%);
+            cursor: pointer;
+            color: #888;
+            user-select: none;
+            font-size: 18px;
+        }
+
+        .toggle-icon:hover {
+            color: #667eea;
+        }
+
+        /* Pricelist Page Styles */
+        .pricelist-container {
+            max-width: 900px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 10px 30px rgba(0,0,0,0.2);
+            overflow: hidden;
+        }
+
+        .header {
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            color: white;
+            padding: 25px 20px;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+        }
+
+        .header-content {
+            flex: 1;
+            text-align: center;
+        }
+
+        .header h1 {
+            font-size: 26px;
+            margin-bottom: 8px;
+        }
+
+        .header p {
+            font-size: 14px;
+            opacity: 0.9;
+        }
+
+        .logout-button {
+            background: rgba(255, 255, 255, 0.2);
+            border: 1px solid rgba(255, 255, 255, 0.3);
+            color: white;
+            padding: 8px 16px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 14px;
+            transition: all 0.3s;
+        }
+
+        .logout-button:hover {
+            background: rgba(255, 255, 255, 0.3);
+        }
+
+        .search-box {
+            padding: 20px;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e0e0e0;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+
+        .search-input {
+            width: 100%;
+            padding: 14px 20px;
+            font-size: 16px;
+            border: 2px solid #ddd;
+            border-radius: 10px;
+            transition: all 0.3s;
+            background: white;
+        }
+
+        .search-input:focus {
+            outline: none;
+            border-color: #667eea;
+            box-shadow: 0 0 0 4px rgba(102, 126, 234, 0.1);
+        }
+
+        .item-count {
+            padding: 12px 20px;
+            text-align: center;
+            color: #666;
+            font-size: 14px;
+            background: #f8f9fa;
+            border-bottom: 1px solid #e0e0e0;
+            position: sticky;
+            top: 74px;
+            z-index: 99;
+        }
+
+        .item-count strong {
+            color: #667eea;
+            font-weight: 700;
+        }
+
+        .price-list {
+            padding: 10px;
+            max-height: calc(100vh - 280px);
+            overflow-y: auto;
+        }
+
+        .price-item {
+            padding: 18px;
+            margin: 10px;
+            background: white;
+            border: 1px solid #e0e0e0;
+            border-radius: 12px;
+            transition: all 0.3s;
+        }
+
+        .price-item:hover {
+            box-shadow: 0 4px 20px rgba(102, 126, 234, 0.15);
+            transform: translateY(-2px);
+            border-color: #667eea;
+        }
+
+        .item-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: flex-start;
+            margin-bottom: 12px;
+            gap: 15px;
+        }
+
+        .item-name {
+            font-size: 17px;
+            font-weight: 600;
+            color: #333;
+            line-height: 1.4;
+            flex: 1;
+        }
+
+        .item-codes {
+            display: flex;
+            gap: 10px;
+            margin-bottom: 12px;
+            flex-wrap: wrap;
+        }
+
+        .code-badge {
+            display: inline-flex;
+            align-items: center;
+            gap: 5px;
+            padding: 4px 10px;
+            background: #f0f0f0;
+            border-radius: 6px;
+            font-size: 12px;
+            color: #666;
+        }
+
+        .code-badge span {
+            font-family: monospace;
+            color: #333;
+            font-weight: 600;
+        }
+
+        .item-prices {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 12px;
+            padding-top: 12px;
+            border-top: 1px dashed #e0e0e0;
+        }
+
+        .price-box {
+            text-align: center;
+            padding: 10px;
+            border-radius: 8px;
+            transition: all 0.3s;
+        }
+
+        .price-box.before-tax {
+            background: #f8f9fa;
+            border: 1px solid #e0e0e0;
+        }
+
+        .price-box.after-tax {
+            background: linear-gradient(135deg, #667eea15 0%, #764ba215 100%);
+            border: 2px solid #667eea;
+        }
+
+        .price-label {
+            font-size: 11px;
+            color: #888;
+            margin-bottom: 4px;
+            font-weight: 500;
+            text-transform: uppercase;
+        }
+
+        .price-value {
+            font-size: 18px;
+            font-weight: bold;
+            color: #667eea;
+        }
+
+        .price-box.before-tax .price-value {
+            color: #666;
+        }
+
+        .no-results {
+            text-align: center;
+            padding: 60px 20px;
+            color: #999;
+            display: none;
+        }
+
+        .no-results.show {
+            display: block;
+        }
+
+        .no-results h3 {
+            font-size: 20px;
+            margin-bottom: 10px;
+            color: #666;
+        }
+
+        .no-results p {
+            font-size: 14px;
+        }
+
+        .price-list::-webkit-scrollbar {
+            width: 8px;
+        }
+
+        .price-list::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 10px;
+        }
+
+        .price-list::-webkit-scrollbar-thumb {
+            background: #667eea;
+            border-radius: 10px;
+        }
+
+        .price-list::-webkit-scrollbar-thumb:hover {
+            background: #764ba2;
+        }
+
+        .hidden {
+            display: none !important;
+        }
+
+        @media (max-width: 600px) {
+            .pricelist-container {
+                border-radius: 0;
+            }
+
+            .header {
+                flex-direction: column;
+                gap: 15px;
+            }
+
+            .header h1 {
+                font-size: 22px;
+            }
+
+            .item-prices {
+                grid-template-columns: 1fr;
+                gap: 8px;
+            }
+
+            .item-header {
+                flex-direction: column;
+                gap: 10px;
+            }
+
+            .login-header h1 {
+                font-size: 24px;
+            }
+
+            .login-form {
+                padding: 30px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+    <!-- Login Page -->
+    <div id="loginPage" class="login-container">
+        <div class="login-header">
+            <div class="login-icon">🔐</div>
+            <h1>DMC Pricelist</h1>
+            <p>Staff Access Only</p>
+        </div>
+
+        <div class="login-form">
+            <div class="error-message" id="errorMessage">
+                Invalid username or password. Please try again.
+            </div>
+
+            <form id="loginForm" onsubmit="return handleLogin(event)">
+                <div class="form-group">
+                    <label class="form-label" for="username">Username</label>
+                    <input 
+                        type="text" 
+                        id="username" 
+                        class="form-input" 
+                        placeholder="Enter your username"
+                        autocomplete="username"
+                        required
+                    >
+                </div>
+
+                <div class="form-group">
+                    <label class="form-label" for="password">Password</label>
+                    <div class="password-toggle">
+                        <input 
+                            type="password" 
+                            id="password" 
+                            class="form-input" 
+                            placeholder="Enter your password"
+                            autocomplete="current-password"
+                            required
+                            style="padding-left: 45px;"
+                        >
+                        <span class="toggle-icon" onclick="togglePassword()">👁️</span>
+                    </div>
+                </div>
+
+                <button type="submit" class="login-button">
+                    Sign In
+                </button>
+            </form>
+        </div>
+
+        <div class="login-footer">
+            &copy; 2026 DMC Medical Center
+        </div>
+    </div>
+
+    <!-- Pricelist Page -->
+    <div id="pricelistPage" class="pricelist-container hidden">
+        <div class="header">
+            <div style="width: 80px;"></div>
+            <div class="header-content">
+                <h1>📋 DMC Pricelist</h1>
+                <p>DMC Medical Center - Staff Only</p>
+            </div>
+            <button class="logout-button" onclick="handleLogout()">Logout</button>
+        </div>
+
+        <div class="search-box">
+            <input 
+                type="text" 
+                id="searchInput" 
+                class="search-input" 
+                placeholder="🔍 Search for service, code, or price..."
+                autocomplete="off"
+            >
+        </div>
+
+        <div class="item-count" id="itemCount">
+            Showing <strong id="displayCount">0</strong> of <strong id="totalCount">0</strong> services
+        </div>
+
+        <div class="price-list" id="priceList">
+            <!-- Services will be added here -->
+        </div>
+
+        <div class="no-results" id="noResults">
+            <h3>🔍 No Results Found</h3>
+            <p>Try searching with different keywords</p>
+        </div>
+    </div>
+
+    <script>
+        // Login credentials
+        const VALID_USERNAME = 'dkmc.list';
+        const VALID_PASSWORD = 'Ddf54421';
+
+        // Services data
+        const products = [
+        {
+                "name": "kenacort 40 mg inj",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "0901233075",
+                "alt_code": "0901233075"
+        },
+        {
+                "name": "PULMICORT SUSP. DOSE with NUBulizer",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "0404233471",
+                "alt_code": "1"
+        },
+        {
+                "name": "EMG",
+                "price_before_tax": 1800.0,
+                "price_after_tax": 2070.0,
+                "main_code": "11012-00-00",
+                "alt_code": "10"
+        },
+        {
+                "name": "Transrectal US for prostate",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "55600-00-00",
+                "alt_code": "100"
+        },
+        {
+                "name": "Spirometry Assessment",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "1000",
+                "alt_code": "1000"
+        },
+        {
+                "name": "audiometry assessment",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "1001",
+                "alt_code": "1001"
+        },
+        {
+                "name": "EPIGONAL 75 I.U. LYOPHILIZED POWDER FOR I.M. Injec",
+                "price_before_tax": 30.55,
+                "price_after_tax": 35.1325,
+                "main_code": "1006",
+                "alt_code": "1006"
+        },
+        {
+                "name": "HUMERUS UPPER ARM - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57506-00-01",
+                "alt_code": "102"
+        },
+        {
+                "name": "ELBOW - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57506-01-11",
+                "alt_code": "103"
+        },
+        {
+                "name": "ELBOW - 3 VIEWS",
+                "price_before_tax": 220.0,
+                "price_after_tax": 252.99999999999997,
+                "main_code": "57506-01-21",
+                "alt_code": "104"
+        },
+        {
+                "name": "ULNA & RADIUS - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57506-02-01",
+                "alt_code": "105"
+        },
+        {
+                "name": "WRIST - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57506-03-11",
+                "alt_code": "106"
+        },
+        {
+                "name": "WRIST - 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "57506-03-21",
+                "alt_code": "107"
+        },
+        {
+                "name": "Twin Pregnancy U/S",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "10772",
+                "alt_code": "10772"
+        },
+        {
+                "name": "HAND - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57506-04-11",
+                "alt_code": "108"
+        },
+        {
+                "name": "HAND - 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "57506-04-21",
+                "alt_code": "109"
+        },
+        {
+                "name": "NCS",
+                "price_before_tax": 1800.0,
+                "price_after_tax": 2070.0,
+                "main_code": "11012-01-00",
+                "alt_code": "11"
+        },
+        {
+                "name": "FEMUR/THIGH - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57518-00-11",
+                "alt_code": "110"
+        },
+        {
+                "name": "FEMUR/THIGH - 3 VIEWS",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "57518-00-21",
+                "alt_code": "111"
+        },
+        {
+                "name": "KNEE - 2 VIEWS AP & Lat.",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57518-01-11",
+                "alt_code": "112"
+        },
+        {
+                "name": "KNEE - BILATERAL  one view",
+                "price_before_tax": 110.0,
+                "price_after_tax": 126.49999999999999,
+                "main_code": "57518-01-12",
+                "alt_code": "113"
+        },
+        {
+                "name": "KNEE - 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "57518-01-21",
+                "alt_code": "114"
+        },
+        {
+                "name": "KNEE - 4 VIEWS",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "57518-01-31",
+                "alt_code": "115"
+        },
+        {
+                "name": "LEG - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57518-02-01",
+                "alt_code": "116"
+        },
+        {
+                "name": "ANKLE - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57518-03-11",
+                "alt_code": "117"
+        },
+        {
+                "name": "ANKLE - 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "57518-03-21",
+                "alt_code": "118"
+        },
+        {
+                "name": "FOOT OSCALCIS - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57518-04-11",
+                "alt_code": "119"
+        },
+        {
+                "name": "BRONCHOVENT 5mg/ml nebuliser solution",
+                "price_before_tax": 40.0,
+                "price_after_tax": 46.0,
+                "main_code": "1108222472",
+                "alt_code": "12"
+        },
+        {
+                "name": "FOOT OSCALCIS 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "57518-04-21",
+                "alt_code": "120"
+        },
+        {
+                "name": "TIBIA/FEBULA/TOES - 2 VIEWS  (INFANT)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "57524-02-01",
+                "alt_code": "121"
+        },
+        {
+                "name": "SHOULDER SCAPULA - 1 VIEW",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "57700-00-11",
+                "alt_code": "122"
+        },
+        {
+                "name": "SHOULDER SCAPULA - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57700-00-21",
+                "alt_code": "123"
+        },
+        {
+                "name": "CLAVICLE - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57706-00-01",
+                "alt_code": "124"
+        },
+        {
+                "name": "HIP - 1 VIEW",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "57712-00-11",
+                "alt_code": "125"
+        },
+        {
+                "name": "HIP - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57712-00-21",
+                "alt_code": "126"
+        },
+        {
+                "name": "PELVIS - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57715-00-00",
+                "alt_code": "127"
+        },
+        {
+                "name": "SKULL I VIEW",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "57901-00-10",
+                "alt_code": "128"
+        },
+        {
+                "name": "SKULL - 4 VIEWS",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "57901-00-20",
+                "alt_code": "129"
+        },
+        {
+                "name": "Diclofenac sodium inj.",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "129-9-16",
+                "alt_code": "129-9-16"
+        },
+        {
+                "name": "VISUAL FIELDS - BOTH EYE",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "11221-00-00",
+                "alt_code": "13"
+        },
+        {
+                "name": "MASTOIDS - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57906-00-01",
+                "alt_code": "130"
+        },
+        {
+                "name": "hydrocortisone 100 mg inj.",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "1306210786",
+                "alt_code": "1306210786"
+        },
+        {
+                "name": "IAM ( INTERNAL AUDITORY MEATUS )",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "57909-00-00",
+                "alt_code": "131"
+        },
+        {
+                "name": "SKULL ORBIT - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57912-00-00",
+                "alt_code": "132"
+        },
+        {
+                "name": "MANDIBLE/JAW - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57915-00-00",
+                "alt_code": "133"
+        },
+        {
+                "name": "SIALOGRAM ONE SIDE",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "57918-00-00",
+                "alt_code": "134"
+        },
+        {
+                "name": "NASAL BONES/SINUSES - 2 VIEWS, ADENOIDS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57921-00-00",
+                "alt_code": "135"
+        },
+        {
+                "name": "TM JOINT BILATERAL",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "57927-00-02",
+                "alt_code": "136"
+        },
+        {
+                "name": "NECK - 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "57945-00-00",
+                "alt_code": "137"
+        },
+        {
+                "name": "X-RAY PANORAMIC",
+                "price_before_tax": 174.0,
+                "price_after_tax": 200.1,
+                "main_code": "57960-00-00",
+                "alt_code": "138"
+        },
+        {
+                "name": "CERVICAL SPINE - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "58100-00-00",
+                "alt_code": "139"
+        },
+        {
+                "name": "VISUAL FIELDS - ONE EYE",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "11224-00-00",
+                "alt_code": "14"
+        },
+        {
+                "name": "DORSAL SPINE/THORACIC - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "58103-00-00",
+                "alt_code": "140"
+        },
+        {
+                "name": "LUMBAR/LUMBO SACRAL SPINE - 2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "58106-00-00",
+                "alt_code": "141"
+        },
+        {
+                "name": "LUMBAR/LUMBO SACRAL SPINE - 4 VIEWS",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "58108-00-00",
+                "alt_code": "142"
+        },
+        {
+                "name": "COCCYX  2 VIEWS",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "58109-00-00",
+                "alt_code": "143"
+        },
+        {
+                "name": "BONE AGE",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "58300-00-00",
+                "alt_code": "144"
+        },
+        {
+                "name": "SKELETAL SURVEY",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "58306-00-00",
+                "alt_code": "145"
+        },
+        {
+                "name": "CHEST - 1 VIEW",
+                "price_before_tax": 90.0,
+                "price_after_tax": 103.49999999999999,
+                "main_code": "58500-00-10",
+                "alt_code": "146"
+        },
+        {
+                "name": "CHEST - 2 VIEWS AP/LAT",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "58500-00-20",
+                "alt_code": "147"
+        },
+        {
+                "name": "CHEST - 3 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "58500-00-30",
+                "alt_code": "148"
+        },
+        {
+                "name": "CARDIAC SERIES - 5 VIEWS",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "58500-00-40",
+                "alt_code": "149"
+        },
+        {
+                "name": "BAER-BRAIN STEM AUDITORY EVOK RESPONSE",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "11300-00-00",
+                "alt_code": "15"
+        },
+        {
+                "name": "STERNUM - 2 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "58521-00-00",
+                "alt_code": "150"
+        },
+        {
+                "name": "RIBS - 2 VIEWS",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "58521-01-00",
+                "alt_code": "151"
+        },
+        {
+                "name": "KUB/ABDOMEN - 1 VIEW",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "58700-00-00",
+                "alt_code": "152"
+        },
+        {
+                "name": "IVP (INTRAVENOUS PYELOGRAM)",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "58706-00-00",
+                "alt_code": "153"
+        },
+        {
+                "name": "RETROGRADE PYELOGRAPHY BILATERAL",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "58715-01-00",
+                "alt_code": "154"
+        },
+        {
+                "name": "RETROGRADE (ASCENDING) URETHROGRAM",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "58718-01-00",
+                "alt_code": "155"
+        },
+        {
+                "name": "MCU (MICTURATING URETHROGRAM)",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "58721-00-00",
+                "alt_code": "156"
+        },
+        {
+                "name": "KUB/ABDOMEN -2 VIEWS",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "58900-00-90",
+                "alt_code": "157"
+        },
+        {
+                "name": "BARIUM MEAL DOUBLE CONTRAST",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "58909-00-00",
+                "alt_code": "158"
+        },
+        {
+                "name": "BARIUM MEAL/FOLLOW THROUGH",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "58912-00-00",
+                "alt_code": "159"
+        },
+        {
+                "name": "IMPEDANCE METER ( TYMPANOGRAM )",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "11324-00-01",
+                "alt_code": "16"
+        },
+        {
+                "name": "BARIUM ENEMA-SINGLE CONTRAST",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "58921-00-00",
+                "alt_code": "160"
+        },
+        {
+                "name": "T TUBE CHOLANGIOGRAM",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "58936-00-00",
+                "alt_code": "161"
+        },
+        {
+                "name": "MAMOGRAPHY ( 2 BREAST )",
+                "price_before_tax": 1200.0,
+                "price_after_tax": 1380.0,
+                "main_code": "59300-00-00",
+                "alt_code": "162"
+        },
+        {
+                "name": "Dexamethasone inj.",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "16-201-92",
+                "alt_code": "16-201-92"
+        },
+        {
+                "name": "MAMOGRAPHY ( 1 BREAST )",
+                "price_before_tax": 1100.0,
+                "price_after_tax": 1265.0,
+                "main_code": "59303-00-00",
+                "alt_code": "163"
+        },
+        {
+                "name": "PELVIMETRY - 2 VIEWS",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "59503-00-00",
+                "alt_code": "164"
+        },
+        {
+                "name": "HSG ( HYSTEROSALPHINGIOGRAPHY )",
+                "price_before_tax": 900.0,
+                "price_after_tax": 1035.0,
+                "main_code": "59712-00-00",
+                "alt_code": "165"
+        },
+        {
+                "name": "VENOGRAM-ONE LIMB",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "59718-00-00",
+                "alt_code": "166"
+        },
+        {
+                "name": "MYELOGRAPHY",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "59724-00-00",
+                "alt_code": "167"
+        },
+        {
+                "name": "SINOGRAM",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "59739-03-00",
+                "alt_code": "168"
+        },
+        {
+                "name": "SACRO ILIAC JOINT 2 VIEWS",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "59751-00-00",
+                "alt_code": "169"
+        },
+        {
+                "name": "AUDIOGRAM",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "11333-00-00",
+                "alt_code": "17"
+        },
+        {
+                "name": "FLOUROSCOPY",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "60503-00-00",
+                "alt_code": "170"
+        },
+        {
+                "name": "ELECTROLYTES (SODIUM, POTASSIUM, CHLORIDE)",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "73000-00-30",
+                "alt_code": "171"
+        },
+        {
+                "name": "LIPID PROFILE=CHOL,HDL,TRIGLYCERIDES , LDL , VLDL",
+                "price_before_tax": 280.0,
+                "price_after_tax": 322.0,
+                "main_code": "73000-00-60",
+                "alt_code": "172"
+        },
+        {
+                "name": "LFT  (D.  BIL,Ind. BIL,PROT,ALB,SGOT,SGPT,ALKPHOS)",
+                "price_before_tax": 320.0,
+                "price_after_tax": 368.0,
+                "main_code": "73000-00-90",
+                "alt_code": "173"
+        },
+        {
+                "name": "ALBUMIN",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-00-80",
+                "alt_code": "174"
+        },
+        {
+                "name": "MICRO ALBUMIN (SEMI-QUANTITATIVE)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-01-00",
+                "alt_code": "175"
+        },
+        {
+                "name": "Amylase ( serum )",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73050-03-00",
+                "alt_code": "176"
+        },
+        {
+                "name": "OCCULT BLOOD",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-04-70",
+                "alt_code": "177"
+        },
+        {
+                "name": "calcitonin",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "73050-05-40",
+                "alt_code": "178"
+        },
+        {
+                "name": "CALCIUM",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-05-50",
+                "alt_code": "179"
+        },
+        {
+                "name": "PULMONARY FUNCTION TEST",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "11506-00-00",
+                "alt_code": "18"
+        },
+        {
+                "name": "CHLORIDE (SERUM, URINE, CSF)",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "73050-07-70",
+                "alt_code": "180"
+        },
+        {
+                "name": "CHOLESTEROL TOTAL",
+                "price_before_tax": 42.0,
+                "price_after_tax": 48.3,
+                "main_code": "73050-08-10",
+                "alt_code": "181"
+        },
+        {
+                "name": "Catecholamines(plasma)",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73050-08-20",
+                "alt_code": "182"
+        },
+        {
+                "name": "CPK",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-09-40",
+                "alt_code": "183"
+        },
+        {
+                "name": "CKMB",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-09-60",
+                "alt_code": "184"
+        },
+        {
+                "name": "CREATININE",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "73050-09-80",
+                "alt_code": "185"
+        },
+        {
+                "name": "CREATININE CLEARANCE (24 HOURS URINE)",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-10-00",
+                "alt_code": "186"
+        },
+        {
+                "name": "Vitamin B-12",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-10-40",
+                "alt_code": "187"
+        },
+        {
+                "name": "FERRITIN",
+                "price_before_tax": 130.0,
+                "price_after_tax": 149.5,
+                "main_code": "73050-13-10",
+                "alt_code": "188"
+        },
+        {
+                "name": "FBS (FASTING BLOOD SUGAR)",
+                "price_before_tax": 16.0,
+                "price_after_tax": 18.4,
+                "main_code": "73050-15-50",
+                "alt_code": "189"
+        },
+        {
+                "name": "DICYNONE 2ML-AMP 250MG",
+                "price_before_tax": 70.0,
+                "price_after_tax": 80.5,
+                "main_code": "1-165-85",
+                "alt_code": "19"
+        },
+        {
+                "name": "POST PRANDIAL 2 HOURS ( PPBS )",
+                "price_before_tax": 16.0,
+                "price_after_tax": 18.4,
+                "main_code": "73050-15-70",
+                "alt_code": "190"
+        },
+        {
+                "name": "GTT ( GLUCOSE TOLERANCE TEST )",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "73050-15-80",
+                "alt_code": "191"
+        },
+        {
+                "name": "G6PD",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73050-16-00",
+                "alt_code": "192"
+        },
+        {
+                "name": "RBS (RANDOM BLOOD SUGAR)",
+                "price_before_tax": 18.0,
+                "price_after_tax": 20.7,
+                "main_code": "73050-16-20",
+                "alt_code": "193"
+        },
+        {
+                "name": "GGT (GAMMA G.T.)",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-16-50",
+                "alt_code": "194"
+        },
+        {
+                "name": "Ophthalmologist-Consultation",
+                "price_before_tax": 34.78,
+                "price_after_tax": 39.997,
+                "main_code": "19401",
+                "alt_code": "19401"
+        },
+        {
+                "name": "FSH",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "73050-16-90",
+                "alt_code": "195"
+        },
+        {
+                "name": "LH",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-17-00",
+                "alt_code": "196"
+        },
+        {
+                "name": "HELICOBACTER PYLORI  Ab  ( blood )",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-17-70",
+                "alt_code": "197"
+        },
+        {
+                "name": "HBA1C - GLYCOSELATED HAEMOGLOBIN",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-18-50",
+                "alt_code": "198"
+        },
+        {
+                "name": "IRON SERUM",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73050-21-10",
+                "alt_code": "199"
+        },
+        {
+                "name": "SCOPINAL / Buscopan 20MG AMPOULE",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "0509234138",
+                "alt_code": "2"
+        },
+        {
+                "name": "ECG WITH REPORT",
+                "price_before_tax": 85.0,
+                "price_after_tax": 97.74999999999999,
+                "main_code": "11700-00-00",
+                "alt_code": "20"
+        },
+        {
+                "name": "TIBC ( IRON SERUM )",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73050-21-20",
+                "alt_code": "200"
+        },
+        {
+                "name": "I.M Injection Without Medication",
+                "price_before_tax": 10.0,
+                "price_after_tax": 11.5,
+                "main_code": "20007",
+                "alt_code": "20007"
+        },
+        {
+                "name": "I.V Injection Without Medication",
+                "price_before_tax": 20.0,
+                "price_after_tax": 23.0,
+                "main_code": "20008",
+                "alt_code": "20008"
+        },
+        {
+                "name": "Surgical procedure A",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "2001",
+                "alt_code": "2001"
+        },
+        {
+                "name": "SURGICAL PROCEDURE B",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "2002",
+                "alt_code": "2002"
+        },
+        {
+                "name": "SURGICAL PROCEDURE C",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "2003",
+                "alt_code": "2003"
+        },
+        {
+                "name": "SURGICAL PROCEDURE D",
+                "price_before_tax": 3000.0,
+                "price_after_tax": 3449.9999999999995,
+                "main_code": "2004",
+                "alt_code": "2004"
+        },
+        {
+                "name": "SURGICAL PROCEDURE E",
+                "price_before_tax": 4000.0,
+                "price_after_tax": 4600.0,
+                "main_code": "2005",
+                "alt_code": "2005"
+        },
+        {
+                "name": "SURGICAL PROCEDURE F",
+                "price_before_tax": 5000.0,
+                "price_after_tax": 5750.0,
+                "main_code": "2006",
+                "alt_code": "2006"
+        },
+        {
+                "name": "INFERTILITY PACKAGE",
+                "price_before_tax": 3000.0,
+                "price_after_tax": 3449.9999999999995,
+                "main_code": "2007",
+                "alt_code": "2007"
+        },
+        {
+                "name": "tetanus vaccine inj.",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "2008",
+                "alt_code": "2008"
+        },
+        {
+                "name": "depomedrol 50 mg injectable",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "2009",
+                "alt_code": "2009"
+        },
+        {
+                "name": "LDH",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73050-21-80",
+                "alt_code": "201"
+        },
+        {
+                "name": "LIPASE",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-23-00",
+                "alt_code": "202"
+        },
+        {
+                "name": "LIPOPROTEIN ELECTROPHORESIS",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "73050-23-30",
+                "alt_code": "203"
+        },
+        {
+                "name": "HDL ( HIGH DENSITY LIPOPROTEIN )",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "73050-23-60",
+                "alt_code": "204"
+        },
+        {
+                "name": "LDL ( LOW DENSITY LIPOPROTEIN )",
+                "price_before_tax": 260.0,
+                "price_after_tax": 299.0,
+                "main_code": "73050-23-80",
+                "alt_code": "205"
+        },
+        {
+                "name": "MAGNESIUM",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-24-00",
+                "alt_code": "206"
+        },
+        {
+                "name": "MYOGLOBIN ELECTROPHORESIS",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "73050-25-10",
+                "alt_code": "207"
+        },
+        {
+                "name": "OSMOLALITY (SERUM, URINE)",
+                "price_before_tax": 220.0,
+                "price_after_tax": 252.99999999999997,
+                "main_code": "73050-26-10",
+                "alt_code": "208"
+        },
+        {
+                "name": "ACID PHOSPHATASE",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-27-40",
+                "alt_code": "209"
+        },
+        {
+                "name": "ALKALINE PHOSPHATASE",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-27-60",
+                "alt_code": "210"
+        },
+        {
+                "name": "PHOSPHORUS",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-28-20",
+                "alt_code": "211"
+        },
+        {
+                "name": "POTASSIUM",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-29-00",
+                "alt_code": "212"
+        },
+        {
+                "name": "PROGESTERONE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-29-70",
+                "alt_code": "213"
+        },
+        {
+                "name": "PROLACTIN",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-29-90",
+                "alt_code": "214"
+        },
+        {
+                "name": "PSA-PROSTATIC SPECIFIC ANTIGEN ( total )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-30-10",
+                "alt_code": "215"
+        },
+        {
+                "name": "TOTAL PROTEIN",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-30-70",
+                "alt_code": "216"
+        },
+        {
+                "name": "GLOBULIN",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "73050-31-00",
+                "alt_code": "217"
+        },
+        {
+                "name": "progestone receptors",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-32-10",
+                "alt_code": "218"
+        },
+        {
+                "name": "ACTH",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73050-32-40",
+                "alt_code": "219"
+        },
+        {
+                "name": "SODIUM",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73050-33-10",
+                "alt_code": "220"
+        },
+        {
+                "name": "Total TESTOSTERONE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-34-50",
+                "alt_code": "221"
+        },
+        {
+                "name": "T4 (Total T4)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-35-10",
+                "alt_code": "222"
+        },
+        {
+                "name": "T4 (FREE T4)",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "73050-35-30",
+                "alt_code": "223"
+        },
+        {
+                "name": "TSH",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-35-50",
+                "alt_code": "224"
+        },
+        {
+                "name": "SGOT/AST",
+                "price_before_tax": 102.0,
+                "price_after_tax": 117.3,
+                "main_code": "73050-35-90",
+                "alt_code": "225"
+        },
+        {
+                "name": "SGPT/ALT",
+                "price_before_tax": 102.0,
+                "price_after_tax": 117.3,
+                "main_code": "73050-36-00",
+                "alt_code": "226"
+        },
+        {
+                "name": "TRIGLYCERIDES",
+                "price_before_tax": 42.0,
+                "price_after_tax": 48.3,
+                "main_code": "73050-36-20",
+                "alt_code": "227"
+        },
+        {
+                "name": "T3 ( total T3 )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-36-40",
+                "alt_code": "228"
+        },
+        {
+                "name": "T3 (FREE T3)",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "73050-36-50",
+                "alt_code": "229"
+        },
+        {
+                "name": "UROFLOWMETRY",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "11900-00-00",
+                "alt_code": "23"
+        },
+        {
+                "name": "BUN (UREA)",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "73050-37-30",
+                "alt_code": "230"
+        },
+        {
+                "name": "URIC ACID",
+                "price_before_tax": 82.0,
+                "price_after_tax": 94.3,
+                "main_code": "73050-37-70",
+                "alt_code": "231"
+        },
+        {
+                "name": "Vasopressin (ADH)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-38-50",
+                "alt_code": "232"
+        },
+        {
+                "name": "BLOOD CULTURE",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-40-00",
+                "alt_code": "233"
+        },
+        {
+                "name": "STOOL CULTURE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-40-10",
+                "alt_code": "234"
+        },
+        {
+                "name": "CULTURE & SENSITIVITY ( ANY SPECIMEN )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-40-30",
+                "alt_code": "235"
+        },
+        {
+                "name": "BACTERIOLOGICAL TESTING FOR FOOD SAMPLES",
+                "price_before_tax": 1500.0,
+                "price_after_tax": 1724.9999999999998,
+                "main_code": "73050-40-40",
+                "alt_code": "236"
+        },
+        {
+                "name": "HVS CULTURE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-40-80",
+                "alt_code": "237"
+        },
+        {
+                "name": "SWAB CULTURE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-40-90",
+                "alt_code": "238"
+        },
+        {
+                "name": "URINE CULTURE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-41-10",
+                "alt_code": "239"
+        },
+        {
+                "name": "CYSTOMETRY+URODYNAMIC STUDY",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "11903-00-00",
+                "alt_code": "24"
+        },
+        {
+                "name": "MICRO FILARIASIS SMEAR",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "73050-43-50",
+                "alt_code": "240"
+        },
+        {
+                "name": "AFB STAINING",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-44-40",
+                "alt_code": "241"
+        },
+        {
+                "name": "CHLAMYDIA ANTIGEN(SCREENING)",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-45-90",
+                "alt_code": "243"
+        },
+        {
+                "name": "Varicella screening test",
+                "price_before_tax": 320.0,
+                "price_after_tax": 368.0,
+                "main_code": "73050-47-30",
+                "alt_code": "244"
+        },
+        {
+                "name": "STOOL FOR ROTA VIRUS",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73050-49-90",
+                "alt_code": "245"
+        },
+        {
+                "name": "BLEEDING TIME",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "73100-00-00",
+                "alt_code": "246"
+        },
+        {
+                "name": "WHITE BLOOD CELL COUNT ONLY",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-00-10",
+                "alt_code": "247"
+        },
+        {
+                "name": "HAEMOGLOBIN ONLY",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "73100-00-70",
+                "alt_code": "248"
+        },
+        {
+                "name": "CBC - COMPLETE BLOOD COUNT",
+                "price_before_tax": 88.0,
+                "price_after_tax": 101.19999999999999,
+                "main_code": "73100-00-90",
+                "alt_code": "249"
+        },
+        {
+                "name": "Ceftriaxone  1gm  Vial",
+                "price_before_tax": 110.0,
+                "price_after_tax": 126.49999999999999,
+                "main_code": "119-172-98",
+                "alt_code": "25"
+        },
+        {
+                "name": "RBC - RED BLOOD CELL",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-01-10",
+                "alt_code": "250"
+        },
+        {
+                "name": "PLATELET COUNT",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-01-60",
+                "alt_code": "251"
+        },
+        {
+                "name": "BLOOD MORPHOLOGY",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-01-80",
+                "alt_code": "252"
+        },
+        {
+                "name": "Bone marrow smear",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73100-01-90",
+                "alt_code": "253"
+        },
+        {
+                "name": "Antithrombin III",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73100-04-00",
+                "alt_code": "254"
+        },
+        {
+                "name": "CLOTTING TIME",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "73100-05-00",
+                "alt_code": "255"
+        },
+        {
+                "name": "FIBRINOGEN",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73100-05-40",
+                "alt_code": "256"
+        },
+        {
+                "name": "HCV ANTIBODY - HEPATITIS C. VIRUS ABS",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73100-08-10",
+                "alt_code": "257"
+        },
+        {
+                "name": "ESR",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "73100-09-00",
+                "alt_code": "258"
+        },
+        {
+                "name": "APTT- PARTIAL THROMBOPLASTIN TIME",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73100-09-60",
+                "alt_code": "259"
+        },
+        {
+                "name": "BLADDER WASH /IRRIGATION",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "11921-00-00",
+                "alt_code": "26"
+        },
+        {
+                "name": "ANA (IFA) ANTINUCLEAR ANTIBODY -",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "73100-10-70",
+                "alt_code": "260"
+        },
+        {
+                "name": "ASO TITER",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-10-90",
+                "alt_code": "261"
+        },
+        {
+                "name": "C-REACTIVE PROTEIN  ( CRP ) - QUALITATIVE",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73100-11-40",
+                "alt_code": "262"
+        },
+        {
+                "name": "TORCH SCREENING",
+                "price_before_tax": 550.0,
+                "price_after_tax": 632.5,
+                "main_code": "73100-13-60",
+                "alt_code": "263"
+        },
+        {
+                "name": "MONOTEST (PAUL BUNNEL TEST)",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "73100-14-20",
+                "alt_code": "264"
+        },
+        {
+                "name": "RA FACTOR",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-17-70",
+                "alt_code": "265"
+        },
+        {
+                "name": "VDRL/RPR",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-18-70",
+                "alt_code": "266"
+        },
+        {
+                "name": "BRUCELLA AGGLUTINATION TEST",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-19-90",
+                "alt_code": "267"
+        },
+        {
+                "name": "CYTOMEGALO VIRUS SCREENING-IGG",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-20-70",
+                "alt_code": "268"
+        },
+        {
+                "name": "CYTOMEGALO VIRUS SCREENING-IGM",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-20-80",
+                "alt_code": "269"
+        },
+        {
+                "name": "EB VIRUS(EPSTEIN BARR VIRUS) IGM IFA",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-21-70",
+                "alt_code": "270"
+        },
+        {
+                "name": "HERPES TYPE 1 & 2 IGM / IGG",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "73100-23-00",
+                "alt_code": "271"
+        },
+        {
+                "name": "AIDS EXAMINATION/HIV I&II",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73100-23-50",
+                "alt_code": "272"
+        },
+        {
+                "name": "MALARIAL SMEAR",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-25-40",
+                "alt_code": "273"
+        },
+        {
+                "name": "RUBELLA ABS. ( SCREENING ) - IGG / IGM",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-25-90",
+                "alt_code": "274"
+        },
+        {
+                "name": "WIDAL TEST",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-26-10",
+                "alt_code": "275"
+        },
+        {
+                "name": "TOXOPLASMA SCREENING - IGG",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-26-50",
+                "alt_code": "276"
+        },
+        {
+                "name": "TOXOPLASMA SCREENING - IGM/IGG",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-26-60",
+                "alt_code": "277"
+        },
+        {
+                "name": "TPHA TEST (IHA)",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73100-26-70",
+                "alt_code": "278"
+        },
+        {
+                "name": "Anti-thyroglubulin antibodies",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "73100-27-50",
+                "alt_code": "279"
+        },
+        {
+                "name": "BONE DENSITOMETRY (SPIROMETRY)",
+                "price_before_tax": 1200.0,
+                "price_after_tax": 1380.0,
+                "main_code": "12306-00-00",
+                "alt_code": "28"
+        },
+        {
+                "name": "URINE ANALYSIS ROUTINE",
+                "price_before_tax": 36.0,
+                "price_after_tax": 41.4,
+                "main_code": "73150-00-60",
+                "alt_code": "280"
+        },
+        {
+                "name": "PERIPHERAL SMEAR",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73200-00-20",
+                "alt_code": "282"
+        },
+        {
+                "name": "PAP SMEAR/CYTOLOGY",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "73200-01-20",
+                "alt_code": "283"
+        },
+        {
+                "name": "Histopathology procedure  small specimen",
+                "price_before_tax": 1500.0,
+                "price_after_tax": 1724.9999999999998,
+                "main_code": "73200-06-50",
+                "alt_code": "284"
+        },
+        {
+                "name": "HISTOPATHOLOGY/BIOPSY ( medium )",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "73200-06-70",
+                "alt_code": "285"
+        },
+        {
+                "name": "COOMB'S DIRECT",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73250-00-30",
+                "alt_code": "287"
+        },
+        {
+                "name": "COOMB'S INDIRECT",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "73250-00-40",
+                "alt_code": "288"
+        },
+        {
+                "name": "BLOOD GROUP ABO + RH",
+                "price_before_tax": 20.0,
+                "price_after_tax": 23.0,
+                "main_code": "73250-00-80",
+                "alt_code": "289"
+        },
+        {
+                "name": "PREMOSAN / primpran10 mg injection",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "124-186-00",
+                "alt_code": "29"
+        },
+        {
+                "name": "SICKLE CELL SCREENING",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73350-02-60",
+                "alt_code": "290"
+        },
+        {
+                "name": "EOSINOPHIL COUNT",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "73400-01-20",
+                "alt_code": "291"
+        },
+        {
+                "name": "PARACETAMOL B.Braun 10 mg/ml solution for infusion",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "77-188-18",
+                "alt_code": "292"
+        },
+        {
+                "name": "AMBULANCE FEE - LOCATION  LESS THAN 30 KM",
+                "price_before_tax": 5000.0,
+                "price_after_tax": 5750.0,
+                "main_code": "83530-00-20",
+                "alt_code": "293"
+        },
+        {
+                "name": "CONSULTATION  FEE - GENERAL PRACTITIONER -GP",
+                "price_before_tax": 17.3,
+                "price_after_tax": 19.895,
+                "main_code": "83600-00-00",
+                "alt_code": "294"
+        },
+        {
+                "name": "CONSULTATION  FEE - SPECIALIST",
+                "price_before_tax": 30.0,
+                "price_after_tax": 34.5,
+                "main_code": "83600-00-10",
+                "alt_code": "295"
+        },
+        {
+                "name": "TREATMENT/OBESERVATION  ROOM FEES(MORE THAN ONE HOUR)",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "83610-00-00",
+                "alt_code": "298"
+        },
+        {
+                "name": "Nurse Home Visit",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "83620-00-00",
+                "alt_code": "299"
+        },
+        {
+                "name": "NORMAL SALINE I.V. INFUSION",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "06285111000116",
+                "alt_code": "3"
+        },
+        {
+                "name": "CORNEAL PACHOMETRY",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "90067-00-11",
+                "alt_code": "300"
+        },
+        {
+                "name": "TOPOGRAPHY CORNEAL",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "90067-00-31",
+                "alt_code": "301"
+        },
+        {
+                "name": "EPILATION OF ABERRANT LASHES",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "90086-00-01",
+                "alt_code": "302"
+        },
+        {
+                "name": "EAR PIERCING",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "90111-00-10",
+                "alt_code": "303"
+        },
+        {
+                "name": "INJECTION OF THE TURBINATES",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "90133-00-00",
+                "alt_code": "304"
+        },
+        {
+                "name": "SMALL CYST ENUCLEATION UNDER LA",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "90141-01-10",
+                "alt_code": "305"
+        },
+        {
+                "name": "LARGE CYST ENUCLLEATION UNDERLA",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "90141-01-30",
+                "alt_code": "306"
+        },
+        {
+                "name": "URETHRAL IRRIGATION",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "90365-00-00",
+                "alt_code": "307"
+        },
+        {
+                "name": "LARGE FINGER / TOE SPLINT",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "90595-00-11",
+                "alt_code": "309"
+        },
+        {
+                "name": "GASTRIC LAVAGE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "14200-00-00",
+                "alt_code": "31"
+        },
+        {
+                "name": "ADJUSTABLE FOOT BRACE",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "90595-00-31",
+                "alt_code": "310"
+        },
+        {
+                "name": "BELOW  ELBOW POP",
+                "price_before_tax": 650.0,
+                "price_after_tax": 747.4999999999999,
+                "main_code": "90595-00-51",
+                "alt_code": "311"
+        },
+        {
+                "name": "LARGE ARM/LEG SPLINT",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "90595-00-61",
+                "alt_code": "312"
+        },
+        {
+                "name": "BELOW KNEE POP",
+                "price_before_tax": 750.0,
+                "price_after_tax": 862.4999999999999,
+                "main_code": "90595-00-71",
+                "alt_code": "313"
+        },
+        {
+                "name": "ABOVE KNEE P.O.P",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "90595-00-81",
+                "alt_code": "314"
+        },
+        {
+                "name": "NASAL SPLINT ( POP )",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "90595-00-91",
+                "alt_code": "315"
+        },
+        {
+                "name": "INTRADERMAL INJECTION",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "90660-00-00",
+                "alt_code": "316"
+        },
+        {
+                "name": "MRI any part of the body W/WITHOUT contrast",
+                "price_before_tax": 1600.0,
+                "price_after_tax": 1839.9999999999998,
+                "main_code": "90901-08-10",
+                "alt_code": "317"
+        },
+        {
+                "name": "CYSTOGRAM",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "90907-00-00",
+                "alt_code": "318"
+        },
+        {
+                "name": "AMBULATORY B.P. MONITOR",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "92001-00-10",
+                "alt_code": "319"
+        },
+        {
+                "name": "TAZOCIN 4.5GM VIAL + EDTA",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "1-497-05",
+                "alt_code": "32"
+        },
+        {
+                "name": "VER-VISUAL EVOKED RESPONSE",
+                "price_before_tax": 1800.0,
+                "price_after_tax": 2070.0,
+                "main_code": "92015-00-01",
+                "alt_code": "320"
+        },
+        {
+                "name": "COLOR VISION EXAMINATION",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "92018-00-00",
+                "alt_code": "321"
+        },
+        {
+                "name": "PACKING OF NOSE/EARS",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "92027-00-02",
+                "alt_code": "322"
+        },
+        {
+                "name": "N.G.T",
+                "price_before_tax": 130.0,
+                "price_after_tax": 149.5,
+                "main_code": "92036-00-00",
+                "alt_code": "323"
+        },
+        {
+                "name": "NEBULIZER OR OXYGEN PER HOUR",
+                "price_before_tax": 40.0,
+                "price_after_tax": 46.0,
+                "main_code": "92043-00-00",
+                "alt_code": "324"
+        },
+        {
+                "name": "Pap Smear",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "92130-00-00",
+                "alt_code": "325"
+        },
+        {
+                "name": "PROSTATIC MASSAGE",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "92131-00-00",
+                "alt_code": "326"
+        },
+        {
+                "name": "LOCAL ANAESTHESIA (IF NO PROCEDURE)",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "92513-99-00",
+                "alt_code": "327"
+        },
+        {
+                "name": "STENGER TEST(UNILATERAL & NON-ORGANIC HL",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "96009-00-00",
+                "alt_code": "328"
+        },
+        {
+                "name": "REFRACTION TEST FOR GLASSES",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "96043-00-01",
+                "alt_code": "329"
+        },
+        {
+                "name": "GYNOCIN 10 IU/ml solution for injection",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "1611211327",
+                "alt_code": "33"
+        },
+        {
+                "name": "ABLE-ALTERNATE BINAURAL LOUDNESS BALANCE",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "96056-00-00",
+                "alt_code": "330"
+        },
+        {
+                "name": "TONE DECAY TEST",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "96058-00-00",
+                "alt_code": "331"
+        },
+        {
+                "name": "HEARING AID ADJUSTMENT & EVALUATION BILATERAL",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "96092-00-41",
+                "alt_code": "332"
+        },
+        {
+                "name": "HEARING AID ADJUSTMENT & EVALUATION UNILATERAL",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "96092-00-42",
+                "alt_code": "333"
+        },
+        {
+                "name": "POP REPAIR",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "96093-00-00",
+                "alt_code": "334"
+        },
+        {
+                "name": "PLASTER CAST REMOVAL",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "96094-00-00",
+                "alt_code": "335"
+        },
+        {
+                "name": "PHYSIOTHERAPY SESSION INCLUSIVE(MASSAG,SHORTWAIVE…",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "96129-00-00",
+                "alt_code": "336"
+        },
+        {
+                "name": "SUCTION UNDER MICROSCOPE",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "96157-00-00",
+                "alt_code": "337"
+        },
+        {
+                "name": "applanation examination",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "96188-00-00",
+                "alt_code": "338"
+        },
+        {
+                "name": "I.V.INJECTION WITHOUT MEDICATION",
+                "price_before_tax": 20.0,
+                "price_after_tax": 23.0,
+                "main_code": "96199-19-00",
+                "alt_code": "339"
+        },
+        {
+                "name": "ABSCESS DRAINAGE",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "96215-00-10",
+                "alt_code": "340"
+        },
+        {
+                "name": "CONSULTATION FEE - DENTIST",
+                "price_before_tax": 17.0,
+                "price_after_tax": 19.549999999999997,
+                "main_code": "97014-00-00",
+                "alt_code": "341"
+        },
+        {
+                "name": "Simple X-Ray ( periepical )",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "97022-00-10",
+                "alt_code": "342"
+        },
+        {
+                "name": "GUM TREATMENT",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "97213-00-00",
+                "alt_code": "343"
+        },
+        {
+                "name": "SIMPLE EXTRACTION/TOOTH ( ant. tooth)",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "97311-01-00",
+                "alt_code": "344"
+        },
+        {
+                "name": "Impacted SURGICAL EXTRACTION ( ant. tooth )",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "97321-07-10",
+                "alt_code": "345"
+        },
+        {
+                "name": "SURGICAL EXTRACTION OF IMPACTED/WISDOM TOOTH",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "97324-01-00",
+                "alt_code": "346"
+        },
+        {
+                "name": "EXCISION OF GIGIVAL OPERCULUM",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "97338-00-00",
+                "alt_code": "347"
+        },
+        {
+                "name": "PULPOTOMY/PULP AMPUTATION",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "97414-00-00",
+                "alt_code": "348"
+        },
+        {
+                "name": "ONE ROOT CANAL TOOTH WITH FILLING",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "97417-00-00",
+                "alt_code": "349"
+        },
+        {
+                "name": "MULTI ROOT CANAL TOOTH WITH FILLING",
+                "price_before_tax": 420.0,
+                "price_after_tax": 482.99999999999994,
+                "main_code": "97418-00-00",
+                "alt_code": "350"
+        },
+        {
+                "name": "PULPECTOMY",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "97419-00-00",
+                "alt_code": "351"
+        },
+        {
+                "name": "EPICECTOMY",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "97432-00-00",
+                "alt_code": "352"
+        },
+        {
+                "name": "AMALGUM FILLING W/LINING",
+                "price_before_tax": 190.0,
+                "price_after_tax": 218.49999999999997,
+                "main_code": "97511-01-00",
+                "alt_code": "353"
+        },
+        {
+                "name": "COMPOSITE FILLING",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "97521-01-00",
+                "alt_code": "354"
+        },
+        {
+                "name": "CT Scan (any part of body or organ ) w/ without contrast",
+                "price_before_tax": 900.0,
+                "price_after_tax": 1035.0,
+                "main_code": "99999-99-92",
+                "alt_code": "355"
+        },
+        {
+                "name": "Diprofose inj.",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "3-5710-22",
+                "alt_code": "3-5710-22"
+        },
+        {
+                "name": "employment medical fittness ( male )",
+                "price_before_tax": 139.0,
+                "price_after_tax": 159.85,
+                "main_code": "MD0003",
+                "alt_code": "359"
+        },
+        {
+                "name": "employment medical fittness ( female )",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "MD0004",
+                "alt_code": "360"
+        },
+        {
+                "name": "driving license medical fittness",
+                "price_before_tax": 69.57,
+                "price_after_tax": 80.00549999999998,
+                "main_code": "MD0005",
+                "alt_code": "361"
+        },
+        {
+                "name": "Baladeya medical fittness ( male )",
+                "price_before_tax": 113.04,
+                "price_after_tax": 129.996,
+                "main_code": "MD0006",
+                "alt_code": "362"
+        },
+        {
+                "name": "Baladeya medical fittness ( Female )",
+                "price_before_tax": 130.44,
+                "price_after_tax": 150.00599999999997,
+                "main_code": "MD0007",
+                "alt_code": "363"
+        },
+        {
+                "name": "SIMPLE EXTRACTION/TOOTH ( posterior tooth)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "365",
+                "alt_code": "365"
+        },
+        {
+                "name": "SIMPLE Surgical extraction  ( ant. tooth)",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "366",
+                "alt_code": "366"
+        },
+        {
+                "name": "composit filling ( 1 serface )",
+                "price_before_tax": 110.0,
+                "price_after_tax": 126.49999999999999,
+                "main_code": "368",
+                "alt_code": "368"
+        },
+        {
+                "name": "composit filling ( 2 serface )",
+                "price_before_tax": 160.0,
+                "price_after_tax": 184.0,
+                "main_code": "369",
+                "alt_code": "369"
+        },
+        {
+                "name": "ADRENALINE/EPINEPHRINE INJ 1:1000 INJECTION",
+                "price_before_tax": 40.0,
+                "price_after_tax": 46.0,
+                "main_code": "1810222749",
+                "alt_code": "37"
+        },
+        {
+                "name": "amalgam filling ( 1 surface )",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "370",
+                "alt_code": "370"
+        },
+        {
+                "name": "amalgam filling ( 2surface )",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "371",
+                "alt_code": "371"
+        },
+        {
+                "name": "home dental bleaching ( whitining )",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "372",
+                "alt_code": "372"
+        },
+        {
+                "name": "COMPOSIT FILLING ( 3 SURFACES )",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "373",
+                "alt_code": "373"
+        },
+        {
+                "name": "home bleaching tray",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "374",
+                "alt_code": "374"
+        },
+        {
+                "name": "HBsAg",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "376",
+                "alt_code": "376"
+        },
+        {
+                "name": "Night guird",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "377",
+                "alt_code": "377"
+        },
+        {
+                "name": "CREP BANDAGE",
+                "price_before_tax": 85.0,
+                "price_after_tax": 97.74999999999999,
+                "main_code": "379D",
+                "alt_code": "379D"
+        },
+        {
+                "name": "Omeprazol / pantoprazol 40MG INJ",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "2102221744",
+                "alt_code": "38"
+        },
+        {
+                "name": "Hb electrophoresis",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "380",
+                "alt_code": "380"
+        },
+        {
+                "name": "RT. Calcinium  X-Ray 2 views",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "381",
+                "alt_code": "381"
+        },
+        {
+                "name": "LT.. Calcinium  X-Ray 2 views",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "382",
+                "alt_code": "382"
+        },
+        {
+                "name": "Implanon insertion",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "392",
+                "alt_code": "392"
+        },
+        {
+                "name": "Implanon Removal / cap.",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "393",
+                "alt_code": "393"
+        },
+        {
+                "name": "Perineal Wash",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "394",
+                "alt_code": "394"
+        },
+        {
+                "name": "anti cardiolipin IgM",
+                "price_before_tax": 218.0,
+                "price_after_tax": 250.7,
+                "main_code": "395",
+                "alt_code": "395"
+        },
+        {
+                "name": "anti cardiolipin IgG",
+                "price_before_tax": 218.0,
+                "price_after_tax": 250.7,
+                "main_code": "396",
+                "alt_code": "396"
+        },
+        {
+                "name": "anti cardiolipin IgA",
+                "price_before_tax": 218.0,
+                "price_after_tax": 250.7,
+                "main_code": "397",
+                "alt_code": "397"
+        },
+        {
+                "name": "Gyne. Procedure",
+                "price_before_tax": 2500.0,
+                "price_after_tax": 2875.0,
+                "main_code": "398",
+                "alt_code": "398"
+        },
+        {
+                "name": "Repeated IUI",
+                "price_before_tax": 1800.0,
+                "price_after_tax": 2070.0,
+                "main_code": "399",
+                "alt_code": "399"
+        },
+        {
+                "name": "DEXTROSE 5%",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "06285111000543",
+                "alt_code": "4"
+        },
+        {
+                "name": "PARANASA SINUS ( PNS )   1 VIEW",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "4001",
+                "alt_code": "4001"
+        },
+        {
+                "name": "Dengue virus",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "401",
+                "alt_code": "401"
+        },
+        {
+                "name": "Total Serum Bilirubin",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "40112",
+                "alt_code": "40112"
+        },
+        {
+                "name": "medical fittness ( hand report )",
+                "price_before_tax": 39.13,
+                "price_after_tax": 44.9995,
+                "main_code": "405",
+                "alt_code": "405"
+        },
+        {
+                "name": "pregnancy test ( serum  )",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "406",
+                "alt_code": "406"
+        },
+        {
+                "name": "vitamine D test",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "407",
+                "alt_code": "407"
+        },
+        {
+                "name": "cervical spine - 1 VIEW",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "408",
+                "alt_code": "408"
+        },
+        {
+                "name": "cervical spine - 3 VIEWS",
+                "price_before_tax": 210.0,
+                "price_after_tax": 241.49999999999997,
+                "main_code": "409",
+                "alt_code": "409"
+        },
+        {
+                "name": "COLD SPONGES / SITZ BATH",
+                "price_before_tax": 30.0,
+                "price_after_tax": 34.5,
+                "main_code": "22065-00-90",
+                "alt_code": "41"
+        },
+        {
+                "name": "EPIGONAL 150 MG INJECTABLE",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "411",
+                "alt_code": "411"
+        },
+        {
+                "name": "ZORON 4 MG / 2 ML INJECTABLE",
+                "price_before_tax": 90.0,
+                "price_after_tax": 103.49999999999999,
+                "main_code": "412",
+                "alt_code": "412"
+        },
+        {
+                "name": "RINGER LACTATE  I.V.F",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "413",
+                "alt_code": "413"
+        },
+        {
+                "name": "abdominal ultrasound ( U/S )",
+                "price_before_tax": 222.0,
+                "price_after_tax": 255.29999999999998,
+                "main_code": "414",
+                "alt_code": "414"
+        },
+        {
+                "name": "pelvic ultrasound  U/S",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "415",
+                "alt_code": "415"
+        },
+        {
+                "name": "ABDOMINAL & PELVIC ultrasound ( U/S )",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "416",
+                "alt_code": "416"
+        },
+        {
+                "name": "Transvaginal ultrasound ( TVS ) U/S",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "417",
+                "alt_code": "417"
+        },
+        {
+                "name": "FOLLOW UP Antinatal scan( U/S )",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "418",
+                "alt_code": "418"
+        },
+        {
+                "name": "follow up TVS  U/S",
+                "price_before_tax": 180.0,
+                "price_after_tax": 206.99999999999997,
+                "main_code": "419",
+                "alt_code": "419"
+        },
+        {
+                "name": "Furosemide PSI 250 mg per 25 ml",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "2407233926",
+                "alt_code": "42"
+        },
+        {
+                "name": "PROGESTRON INJECTABLE",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "420",
+                "alt_code": "420"
+        },
+        {
+                "name": "DEPOPROVERA",
+                "price_before_tax": 380.0,
+                "price_after_tax": 436.99999999999994,
+                "main_code": "421",
+                "alt_code": "421"
+        },
+        {
+                "name": "Follicular study",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "422",
+                "alt_code": "422"
+        },
+        {
+                "name": "KNEE - BILATERAL  2 views",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "423",
+                "alt_code": "423"
+        },
+        {
+                "name": "BHCG serum Quantitative",
+                "price_before_tax": 240.0,
+                "price_after_tax": 276.0,
+                "main_code": "424",
+                "alt_code": "424"
+        },
+        {
+                "name": "syntocinon 5 IU injection",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "425",
+                "alt_code": "425"
+        },
+        {
+                "name": "flagyl 50 ml infusion",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "426",
+                "alt_code": "426"
+        },
+        {
+                "name": "CHLOROHISTOL 10MG-ML Injection*",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "267-186-09",
+                "alt_code": "43"
+        },
+        {
+                "name": "Lasix injectable",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "430",
+                "alt_code": "430"
+        },
+        {
+                "name": "Neurobion Injectable",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "431",
+                "alt_code": "431"
+        },
+        {
+                "name": "soft tissue ultrasound ( U/S )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "432",
+                "alt_code": "432"
+        },
+        {
+                "name": "KUB ultrasound ( U/S )",
+                "price_before_tax": 125.0,
+                "price_after_tax": 143.75,
+                "main_code": "433",
+                "alt_code": "433"
+        },
+        {
+                "name": "ferrosac injectable",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "435",
+                "alt_code": "435"
+        },
+        {
+                "name": "antinatal ultrasound ( U/S )",
+                "price_before_tax": 220.0,
+                "price_after_tax": 252.99999999999997,
+                "main_code": "436",
+                "alt_code": "436"
+        },
+        {
+                "name": "METHYCOBAL 500 mcg injection",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "27-50-98",
+                "alt_code": "44"
+        },
+        {
+                "name": "Anomaly Scan",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "440",
+                "alt_code": "440"
+        },
+        {
+                "name": "insertion of IUCD ( Inc. Loop )",
+                "price_before_tax": 650.0,
+                "price_after_tax": 747.4999999999999,
+                "main_code": "441",
+                "alt_code": "441"
+        },
+        {
+                "name": "Removal of IUCD",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "442",
+                "alt_code": "442"
+        },
+        {
+                "name": "Bil. Breast ultrasound ( U/S )",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "443",
+                "alt_code": "443"
+        },
+        {
+                "name": "above elbow POP",
+                "price_before_tax": 750.0,
+                "price_after_tax": 862.4999999999999,
+                "main_code": "444",
+                "alt_code": "444"
+        },
+        {
+                "name": "REMOVAL OF SUTURE",
+                "price_before_tax": 35.0,
+                "price_after_tax": 40.25,
+                "main_code": "445",
+                "alt_code": "445"
+        },
+        {
+                "name": "FLEET ENEMA",
+                "price_before_tax": 85.0,
+                "price_after_tax": 97.74999999999999,
+                "main_code": "446",
+                "alt_code": "446"
+        },
+        {
+                "name": "Insulin  / unit injectable",
+                "price_before_tax": 7.0,
+                "price_after_tax": 8.049999999999999,
+                "main_code": "447",
+                "alt_code": "447"
+        },
+        {
+                "name": "BURN DRESSING - MEDIUM, 5% - 25%",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "30010-00-20",
+                "alt_code": "45"
+        },
+        {
+                "name": "thyroid U/S",
+                "price_before_tax": 230.0,
+                "price_after_tax": 264.5,
+                "main_code": "450",
+                "alt_code": "450"
+        },
+        {
+                "name": "blood pressure measurment",
+                "price_before_tax": 12.0,
+                "price_after_tax": 13.799999999999999,
+                "main_code": "451",
+                "alt_code": "451"
+        },
+        {
+                "name": "Aramco medical fittness ( hand report )",
+                "price_before_tax": 75.0,
+                "price_after_tax": 86.25,
+                "main_code": "452",
+                "alt_code": "452"
+        },
+        {
+                "name": "Imunoglobuline IGE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "455",
+                "alt_code": "455"
+        },
+        {
+                "name": "soft tissue X- ray ( any part of the body ) 1 view",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "456",
+                "alt_code": "456"
+        },
+        {
+                "name": "fasting insuline",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "457",
+                "alt_code": "457"
+        },
+        {
+                "name": "HISTOPATHOLOGY/BIOPSY ( large )",
+                "price_before_tax": 1500.0,
+                "price_after_tax": 1724.9999999999998,
+                "main_code": "458",
+                "alt_code": "458"
+        },
+        {
+                "name": "Cyclosporine test ( EDTA )",
+                "price_before_tax": 750.0,
+                "price_after_tax": 862.4999999999999,
+                "main_code": "459",
+                "alt_code": "459"
+        },
+        {
+                "name": "BURN DRESSING - LARGE,MORE THAN 25%",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "30014-00-00",
+                "alt_code": "46"
+        },
+        {
+                "name": "Ant Mularian Hormon ( AMH )",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "466",
+                "alt_code": "466"
+        },
+        {
+                "name": "simple surgical extraction ( post. tooth )",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "467",
+                "alt_code": "467"
+        },
+        {
+                "name": "Dental Post / one",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "468",
+                "alt_code": "468"
+        },
+        {
+                "name": "SUTURING / PER STITCH",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "30026-00-10",
+                "alt_code": "47"
+        },
+        {
+                "name": "SMALL  DRESSING",
+                "price_before_tax": 40.0,
+                "price_after_tax": 46.0,
+                "main_code": "30055-00-10",
+                "alt_code": "48"
+        },
+        {
+                "name": "Insulin antibodyTrypsin",
+                "price_before_tax": 1100.0,
+                "price_after_tax": 1265.0,
+                "main_code": "481",
+                "alt_code": "481"
+        },
+        {
+                "name": "pregnancy test (  urine )",
+                "price_before_tax": 60.0,
+                "price_after_tax": 69.0,
+                "main_code": "488",
+                "alt_code": "488"
+        },
+        {
+                "name": "Medium dressing",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "30055-00-20",
+                "alt_code": "49"
+        },
+        {
+                "name": "BIOTIIN",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "499",
+                "alt_code": "499"
+        },
+        {
+                "name": "GLUCOSE 5% I.V INFUSION",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "06298044065510",
+                "alt_code": "5"
+        },
+        {
+                "name": "LARGE DRESSING",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "30055-00-30",
+                "alt_code": "50"
+        },
+        {
+                "name": "choriomon 5000 IU    INJECTABLE",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "5001",
+                "alt_code": "5001"
+        },
+        {
+                "name": "Eye Wash",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "502",
+                "alt_code": "502"
+        },
+        {
+                "name": "REMOVAL OF FOREIGN BODY UNDER L.A.-P/D",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "30061-00-00",
+                "alt_code": "51"
+        },
+        {
+                "name": "XEFO 8MG Powder for injection",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "3006222294",
+                "alt_code": "52"
+        },
+        {
+                "name": "Bone marrow Biopsy (procedure +Biopsy)",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "30081-00-00",
+                "alt_code": "53"
+        },
+        {
+                "name": "PLANTAR WART REMOVAL",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "30186-00-01",
+                "alt_code": "54"
+        },
+        {
+                "name": "CAUTERY UP TO 5 WARTS (ELECTRIC)",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "30189-01-00",
+                "alt_code": "55"
+        },
+        {
+                "name": "Ovulation test",
+                "price_before_tax": 72.5,
+                "price_after_tax": 83.375,
+                "main_code": "550",
+                "alt_code": "550"
+        },
+        {
+                "name": "zinc",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "555",
+                "alt_code": "555"
+        },
+        {
+                "name": "HB ab",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "556",
+                "alt_code": "556"
+        },
+        {
+                "name": "parathyroid hormon ( PTH )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "557",
+                "alt_code": "557"
+        },
+        {
+                "name": "INTRALESSION INJECTION",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "30207-00-00",
+                "alt_code": "56"
+        },
+        {
+                "name": "INCISION & DRAINAGE OF ABSCESS UNDER L.A.-P/D",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "30223-01-00",
+                "alt_code": "57"
+        },
+        {
+                "name": "ORAL CHOLECYSTOGRAM/GALL BLADDER",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "30443-00-00",
+                "alt_code": "58"
+        },
+        {
+                "name": "Gastroscopy",
+                "price_before_tax": 1200.0,
+                "price_after_tax": 1380.0,
+                "main_code": "30473-00-00",
+                "alt_code": "59"
+        },
+        {
+                "name": "GLUCOSE 10%I.V INFUSION",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "06298044065640",
+                "alt_code": "6"
+        },
+        {
+                "name": "CIRCUMCISSION UNDER L.A.",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "30653-00-00",
+                "alt_code": "60"
+        },
+        {
+                "name": "prothrombin time ( PT )",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "600",
+                "alt_code": "600"
+        },
+        {
+                "name": "EXCISION OF CYST(SEB.DERMOID),LIPOMA UNDER LA-P/D",
+                "price_before_tax": 650.0,
+                "price_after_tax": 747.4999999999999,
+                "main_code": "31205-00-10",
+                "alt_code": "62"
+        },
+        {
+                "name": "SIGMOIDOSCOPY",
+                "price_before_tax": 750.0,
+                "price_after_tax": 862.4999999999999,
+                "main_code": "32084-00-00",
+                "alt_code": "63"
+        },
+        {
+                "name": "EPIFASI 5000 IU LYOPHILIZED POWDER FOR I.M. Inject",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "33-201-10",
+                "alt_code": "64"
+        },
+        {
+                "name": "EPIGONAL 75 I.U. LYOPHILIZED POWDER FOR I.M. Injec",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "34-201-10",
+                "alt_code": "65"
+        },
+        {
+                "name": "CAUTERIZATION OF SERVIX",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "35608-00-00",
+                "alt_code": "66"
+        },
+        {
+                "name": "ampicilin 500 mg vial",
+                "price_before_tax": 50.0,
+                "price_after_tax": 57.49999999999999,
+                "main_code": "666",
+                "alt_code": "666"
+        },
+        {
+                "name": "ampicilin 1000 mg vial",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "667",
+                "alt_code": "667"
+        },
+        {
+                "name": "ENDOMETRIAL BIOPSY WITH HISTOPATHOLOGY",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "35620-00-00",
+                "alt_code": "67"
+        },
+        {
+                "name": "FOLLEY CATHETERIZATION",
+                "price_before_tax": 120.0,
+                "price_after_tax": 138.0,
+                "main_code": "36800-00-00",
+                "alt_code": "68"
+        },
+        {
+                "name": "TABIFLEX 75 mg solution for injection/infusion",
+                "price_before_tax": 90.0,
+                "price_after_tax": 103.49999999999999,
+                "main_code": "0902221718",
+                "alt_code": "7"
+        },
+        {
+                "name": "Diagnostic thoracocentesis",
+                "price_before_tax": 350.0,
+                "price_after_tax": 402.49999999999994,
+                "main_code": "38800-00-00",
+                "alt_code": "70"
+        },
+        {
+                "name": "Lumbar puncture-procedure",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "39000-00-00",
+                "alt_code": "71"
+        },
+        {
+                "name": "REMOVAL OF FOREIGN BODY- NOSE/EAR / throut IN OPD",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "41500-00-01",
+                "alt_code": "72"
+        },
+        {
+                "name": "CAUTERY OF EAR DRUM",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "41641-00-01",
+                "alt_code": "73"
+        },
+        {
+                "name": "Estrogen",
+                "price_before_tax": 260.0,
+                "price_after_tax": 299.0,
+                "main_code": "73050-12-10",
+                "alt_code": "73050-12-1"
+        },
+        {
+                "name": "Testosteron",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "73050-34-50",
+                "alt_code": "73050-34-5"
+        },
+        {
+                "name": "Troponin I",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "73050-36-70",
+                "alt_code": "73050-36-7"
+        },
+        {
+                "name": "Stool Analysis",
+                "price_before_tax": 35.0,
+                "price_after_tax": 40.25,
+                "main_code": "73050-44-60",
+                "alt_code": "73050-44-6"
+        },
+        {
+                "name": "H. Pylori Ag ( stool )",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73050-48-70",
+                "alt_code": "73050-48-7"
+        },
+        {
+                "name": "Lupus Anti Coagulant",
+                "price_before_tax": 310.0,
+                "price_after_tax": 356.5,
+                "main_code": "73100-08-8",
+                "alt_code": "73100-08-8"
+        },
+        {
+                "name": "anti cardiolipin IgM , IgG , IgA",
+                "price_before_tax": 218.0,
+                "price_after_tax": 250.7,
+                "main_code": "73100-11-70",
+                "alt_code": "73100-11-7"
+        },
+        {
+                "name": "Semen Analysis",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "73400-03-30",
+                "alt_code": "73400-03-3"
+        },
+        {
+                "name": "EAR WASH",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "41647-00-00",
+                "alt_code": "74"
+        },
+        {
+                "name": "CAUTERY NOSE/TURBINATES/PHARYNX",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "41674-00-00",
+                "alt_code": "75"
+        },
+        {
+                "name": "CAUTERY OF BLEEDING NOSE",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "41677-00-00",
+                "alt_code": "76"
+        },
+        {
+                "name": "Antral washout (canula)",
+                "price_before_tax": 140.0,
+                "price_after_tax": 161.0,
+                "main_code": "41701-00-00",
+                "alt_code": "77"
+        },
+        {
+                "name": "MEDICAL FITTNESS ( teachers )",
+                "price_before_tax": 43.47,
+                "price_after_tax": 49.9905,
+                "main_code": "777",
+                "alt_code": "777"
+        },
+        {
+                "name": "PUNCTURE MAXILLARY SINUS (ANTRAL LAVAGE)",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "41704-00-00",
+                "alt_code": "78"
+        },
+        {
+                "name": "EUSTACHIAN CATHETERIZATION",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "41755-00-01",
+                "alt_code": "79"
+        },
+        {
+                "name": "GYNOCIN 10 IU/ml solution for injection",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "0911211293",
+                "alt_code": "8"
+        },
+        {
+                "name": "Travel Report",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "800212",
+                "alt_code": "800212"
+        },
+        {
+                "name": "fundus examination",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "42503-00-01",
+                "alt_code": "81"
+        },
+        {
+                "name": "SUTURING OF MINOR WOUNDS ( LIDS,CONJUNCTIVA )",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "42632-02-01",
+                "alt_code": "85"
+        },
+        {
+                "name": "UNILATERAL HIP SPICA",
+                "price_before_tax": 600.0,
+                "price_after_tax": 690.0,
+                "main_code": "47540-00-01",
+                "alt_code": "87"
+        },
+        {
+                "name": "BILATERAL HIP SPICA",
+                "price_before_tax": 850.0,
+                "price_after_tax": 977.4999999999999,
+                "main_code": "47540-00-02",
+                "alt_code": "88"
+        },
+        {
+                "name": "PLASTER JACKET",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "47708-00-00",
+                "alt_code": "89"
+        },
+        {
+                "name": "EEG",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "11000-00-00",
+                "alt_code": "9"
+        },
+        {
+                "name": "EXCISION OF INGROWING NAIL UNDER LA-P/D",
+                "price_before_tax": 400.0,
+                "price_after_tax": 459.99999999999994,
+                "main_code": "47916-00-01",
+                "alt_code": "90"
+        },
+        {
+                "name": "surgical procedure 1",
+                "price_before_tax": 1500.0,
+                "price_after_tax": 1724.9999999999998,
+                "main_code": "900",
+                "alt_code": "900"
+        },
+        {
+                "name": "GBS Culture",
+                "price_before_tax": 200.0,
+                "price_after_tax": 229.99999999999997,
+                "main_code": "901",
+                "alt_code": "901"
+        },
+        {
+                "name": "ASPIRATION FROM THE JOINT",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "50124-00-11",
+                "alt_code": "91"
+        },
+        {
+                "name": "INTRA ARTICULAR INJECTION(INCLUDING MEDICINE)",
+                "price_before_tax": 500.0,
+                "price_after_tax": 575.0,
+                "main_code": "50124-01-10",
+                "alt_code": "92"
+        },
+        {
+                "name": "BIOPSY, EXCISIONAL",
+                "price_before_tax": 1000.0,
+                "price_after_tax": 1150.0,
+                "main_code": "50200-00-01",
+                "alt_code": "93"
+        },
+        {
+                "name": "cyclo-refraction",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "55030-00-11",
+                "alt_code": "94"
+        },
+        {
+                "name": "any part of the body/abdomen/pelvis ultrasound ( U",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "55036-00-00",
+                "alt_code": "95"
+        },
+        {
+                "name": "PENILE OR SCROTAL ULTRASOUND ( U/S )",
+                "price_before_tax": 175.0,
+                "price_after_tax": 201.24999999999997,
+                "main_code": "55048-00-00",
+                "alt_code": "96"
+        },
+        {
+                "name": "Transvaginal US and pelvic colour Doppler study",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "55065-00-10",
+                "alt_code": "97"
+        },
+        {
+                "name": "ECHOCARDIOGRAPHY-DOPPLER COLORED",
+                "price_before_tax": 1500.0,
+                "price_after_tax": 1724.9999999999998,
+                "main_code": "55113-00-00",
+                "alt_code": "98"
+        },
+        {
+                "name": "Trans oesophageal Echo.TEE",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "55118-00-00",
+                "alt_code": "99"
+        },
+        {
+                "name": "consultant surgion consultation",
+                "price_before_tax": 43.5,
+                "price_after_tax": 50.025,
+                "main_code": "9999",
+                "alt_code": "9999"
+        },
+        {
+                "name": "orthopedic specialist consultation",
+                "price_before_tax": 43.5,
+                "price_after_tax": 50.025,
+                "main_code": "C10142",
+                "alt_code": "C10142"
+        },
+        {
+                "name": "Gyne. & obs. specialist consultation",
+                "price_before_tax": 43.5,
+                "price_after_tax": 50.025,
+                "main_code": "C1015",
+                "alt_code": "C1015"
+        },
+        {
+                "name": "R.P.D - ( Removable partial Denture )",
+                "price_before_tax": 300.0,
+                "price_after_tax": 345.0,
+                "main_code": "Den0001",
+                "alt_code": "Den0001"
+        },
+        {
+                "name": "complete Denture ( Upper OR Lower )",
+                "price_before_tax": 1750.0,
+                "price_after_tax": 2012.4999999999998,
+                "main_code": "Den0002",
+                "alt_code": "Den0002"
+        },
+        {
+                "name": "complete Denture ( Upper & Lower )",
+                "price_before_tax": 3200.0,
+                "price_after_tax": 3679.9999999999995,
+                "main_code": "Den0003",
+                "alt_code": "Den0003"
+        },
+        {
+                "name": "Porcelin crown ( Cap )",
+                "price_before_tax": 434.78,
+                "price_after_tax": 499.99699999999996,
+                "main_code": "Den0004",
+                "alt_code": "Den0004"
+        },
+        {
+                "name": "Zirconium Crown ( Cap )",
+                "price_before_tax": 695.65,
+                "price_after_tax": 799.9975,
+                "main_code": "Den0005",
+                "alt_code": "Den0005"
+        },
+        {
+                "name": "Chrome Cobalt  R.P.D",
+                "price_before_tax": 2000.0,
+                "price_after_tax": 2300.0,
+                "main_code": "Den0006",
+                "alt_code": "Den0006"
+        },
+        {
+                "name": "Bleaching & Scaling ( whitining )",
+                "price_before_tax": 800.0,
+                "price_after_tax": 919.9999999999999,
+                "main_code": "Den0007",
+                "alt_code": "Den0007"
+        },
+        {
+                "name": "Simple Bleaching ( Whitining )",
+                "price_before_tax": 650.0,
+                "price_after_tax": 747.4999999999999,
+                "main_code": "Den0008",
+                "alt_code": "Den0008"
+        },
+        {
+                "name": "Recementation of bridge",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "Den0009",
+                "alt_code": "Den0009"
+        },
+        {
+                "name": "semple Dental dressing",
+                "price_before_tax": 80.0,
+                "price_after_tax": 92.0,
+                "main_code": "Den0010",
+                "alt_code": "Den0010"
+        },
+        {
+                "name": "Gengival suturing",
+                "price_before_tax": 150.0,
+                "price_after_tax": 172.5,
+                "main_code": "Den0011",
+                "alt_code": "Den0011"
+        },
+        {
+                "name": "Full scaling",
+                "price_before_tax": 250.0,
+                "price_after_tax": 287.5,
+                "main_code": "Den0012",
+                "alt_code": "Den0012"
+        },
+        {
+                "name": "Scaling & polishing",
+                "price_before_tax": 320.0,
+                "price_after_tax": 368.0,
+                "main_code": "Den0013",
+                "alt_code": "Den0013"
+        },
+        {
+                "name": "Glass Ionomer cement Filling",
+                "price_before_tax": 220.0,
+                "price_after_tax": 252.99999999999997,
+                "main_code": "Den0014",
+                "alt_code": "Den0014"
+        },
+        {
+                "name": "D5% with Normal Saline ( DNS )",
+                "price_before_tax": 100.0,
+                "price_after_tax": 114.99999999999999,
+                "main_code": "S1002",
+                "alt_code": "S1002"
+        }
+];
+
+        // Check if user is logged in on page load
+        window.addEventListener('DOMContentLoaded', function() {
+            if (sessionStorage.getItem('isLoggedIn') === 'true') {
+                showPricelist();
+            } else {
+                showLogin();
+            }
+        });
+
+        // Show login page
+        function showLogin() {
+            document.getElementById('loginPage').classList.remove('hidden');
+            document.getElementById('pricelistPage').classList.add('hidden');
+            setTimeout(() => {
+                document.getElementById('username').focus();
+            }, 100);
+        }
+
+        // Show pricelist page
+        function showPricelist() {
+            document.getElementById('loginPage').classList.add('hidden');
+            document.getElementById('pricelistPage').classList.remove('hidden');
+            
+            // Initialize pricelist
+            const totalCount = document.getElementById('totalCount');
+            totalCount.textContent = products.length;
+            displayProducts(products);
+        }
+
+        // Handle login
+        function handleLogin(event) {
+            event.preventDefault();
+            
+            const username = document.getElementById('username').value;
+            const password = document.getElementById('password').value;
+            const errorMessage = document.getElementById('errorMessage');
+
+            if (username === VALID_USERNAME && password === VALID_PASSWORD) {
+                sessionStorage.setItem('isLoggedIn', 'true');
+                showPricelist();
+            } else {
+                errorMessage.classList.add('show');
+                document.getElementById('password').value = '';
+                
+                setTimeout(() => {
+                    errorMessage.classList.remove('show');
+                }, 3000);
+            }
+
+            return false;
+        }
+
+        // Handle logout
+        function handleLogout() {
+            sessionStorage.removeItem('isLoggedIn');
+            document.getElementById('username').value = '';
+            document.getElementById('password').value = '';
+            showLogin();
+        }
+
+        // Toggle password visibility
+        function togglePassword() {
+            const passwordInput = document.getElementById('password');
+            const toggleIcon = document.querySelector('.toggle-icon');
+            
+            if (passwordInput.type === 'password') {
+                passwordInput.type = 'text';
+                toggleIcon.textContent = '🙈';
+            } else {
+                passwordInput.type = 'password';
+                toggleIcon.textContent = '👁️';
+            }
+        }
+
+        // Display products
+        function displayProducts(productsToShow) {
+            const priceList = document.getElementById('priceList');
+            const noResults = document.getElementById('noResults');
+            const displayCount = document.getElementById('displayCount');
+            
+            priceList.innerHTML = '';
+            
+            if (productsToShow.length === 0) {
+                noResults.classList.add('show');
+                displayCount.textContent = '0';
+            } else {
+                noResults.classList.remove('show');
+                productsToShow.forEach(product => {
+                    const item = document.createElement('div');
+                    item.className = 'price-item';
+                    
+                    let codesHtml = '';
+                    if (product.main_code && product.main_code !== 'nan') {
+                        codesHtml += `<div class="code-badge">Main Code: <span>${product.main_code}</span></div>`;
+                    }
+                    if (product.alt_code && product.alt_code !== 'nan' && product.alt_code !== product.main_code) {
+                        codesHtml += `<div class="code-badge">Alt Code: <span>${product.alt_code}</span></div>`;
+                    }
+                    
+                    item.innerHTML = `
+                        <div class="item-header">
+                            <div class="item-name">${product.name}</div>
+                        </div>
+                        ${codesHtml ? `<div class="item-codes">${codesHtml}</div>` : ''}
+                        <div class="item-prices">
+                            <div class="price-box before-tax">
+                                <div class="price-label">Before Tax</div>
+                                <div class="price-value">${product.price_before_tax.toFixed(2)} SAR</div>
+                            </div>
+                            <div class="price-box after-tax">
+                                <div class="price-label">After Tax (15%)</div>
+                                <div class="price-value">${product.price_after_tax.toFixed(2)} SAR</div>
+                            </div>
+                        </div>
+                    `;
+                    priceList.appendChild(item);
+                });
+                displayCount.textContent = productsToShow.length;
+            }
+        }
+
+        // Search functionality
+        document.getElementById('searchInput').addEventListener('input', function(e) {
+            const searchTerm = e.target.value.toLowerCase().trim();
+            
+            const filteredProducts = products.filter(product => 
+                product.name.toLowerCase().includes(searchTerm) ||
+                product.price_before_tax.toString().includes(searchTerm) ||
+                product.price_after_tax.toString().includes(searchTerm) ||
+                (product.main_code && product.main_code.toLowerCase().includes(searchTerm)) ||
+                (product.alt_code && product.alt_code.toLowerCase().includes(searchTerm))
+            );
+            
+            displayProducts(filteredProducts);
+        });
+
+        // Keyboard shortcut for search
+        document.addEventListener('keydown', function(e) {
+            const searchInput = document.getElementById('searchInput');
+            if (e.key === '/' && !e.ctrlKey && e.target !== searchInput && sessionStorage.getItem('isLoggedIn') === 'true') {
+                e.preventDefault();
+                searchInput.focus();
+            }
+        });
+    </script>
+</body>
+</html>
